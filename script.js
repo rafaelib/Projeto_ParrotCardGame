@@ -87,16 +87,17 @@ function comparador() {
 }
 function virarCarta(elemento){
     const itemLista = elemento;
-    const x = itemLista.dataset.framework;
-    arrayTemporario.push(x);
+    const refElemento = itemLista.dataset.framework;
+    arrayTemporario.push(refElemento);
     contadorCartasEmJogo ++;
     if(contadorCartasEmJogo===1){
-        itemLista.classList.add("viradaEmJogo"); 
+        itemLista.classList.add("viradaEmJogo");
+        itemLista.classList.add("naoClickavel");
     }
     else if(contadorCartasEmJogo===2){
         itemLista.classList.add("virada");
         if(arrayTemporario[0]===arrayTemporario[1]){ // e x===true
-            setTimeout(match,1000);
+            setTimeout(match,1000,itemLista);
             // adicionar classe para deixar nao clickavel
         }else{
             setTimeout(naoMatch,1000, itemLista);
@@ -104,10 +105,12 @@ function virarCarta(elemento){
         }
     }
 }
-function match(){
+function match(itemLista){
     const primeiraCarta = document.querySelector(".viradaEmJogo");
             primeiraCarta.classList.add("virada");
             primeiraCarta.classList.remove("viradaEmJogo");
+            primeiraCarta.classList.add("naoClickavel");
+            itemLista.classList.add("naoClickavel");
             contadorCartasEmJogo = 0;
             contadorSucessos++;
             arrayTemporario=[];
@@ -116,7 +119,9 @@ function match(){
 function naoMatch(itemLista){
     const   primeiraCarta = document.querySelector(".viradaEmJogo");
             primeiraCarta.classList.remove("viradaEmJogo");
+            primeiraCarta.classList.remove("naoClickavel");
             itemLista.classList.remove("virada");
+            itemLista.classList.remove("naoClickavel");
             contadorCartasEmJogo = 0;
             contadorFalhas++;
             arrayTemporario=[];

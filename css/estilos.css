@@ -3,7 +3,9 @@ body{
     font-family: 'Roboto', sans-serif;
     overflow-x: hidden;
 }
-
+.naoClickavel{
+    pointer-events: none;
+}
 h1{
     margin: 0 auto;
     margin-top: 40px;
@@ -60,9 +62,6 @@ img{
 .viradaEmJogo .verso{
     opacity: 0;
 }
-.naoClickavel{
-    user-select: block;
-}
 li:first-child{
     margin-left: 0;
 }
@@ -72,7 +71,6 @@ li:nth-child(7){
 li:nth-child(13){
     margin-left: 0;
 }
-
 
 @media (max-width: 800px){
     ul{
