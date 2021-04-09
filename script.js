@@ -1,25 +1,29 @@
 let contador = 0;
+let contadorCartasEmJogo = 0;
 let qtdCartas = 0;
 let listaCartas=[];
 let listaCartasEmbaralhadas=[];
+let arrayTemporario=[];
+let contadorSucessos=0;
+let contadorFalhas=0;
 
 function adicionarCartas() {
     const elemento = document.querySelector("ul");
     while(contador<qtdCartas){
         if(listaCartasEmbaralhadas[contador]=="carta1"){
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/metalparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta1'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/metalparrot.gif'></li>";
         }else if(listaCartasEmbaralhadas[contador]=="carta2"){
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/fiestaparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta2'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/fiestaparrot.gif'></li>";
         }else if(listaCartasEmbaralhadas[contador]=="carta3"){
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/explodyparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta3'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/explodyparrot.gif'></li>";
         }else if(listaCartasEmbaralhadas[contador]=="carta4"){
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/bobrossparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta4'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/bobrossparrot.gif'></li>";
         }else if(listaCartasEmbaralhadas[contador]=="carta5"){
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/revertitparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta5'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/revertitparrot.gif'></li>";
         }else if(listaCartasEmbaralhadas[contador]=="carta6"){
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/tripletsparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta6'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/tripletsparrot.gif'></li>";
         }else{
-            elemento.innerHTML = elemento.innerHTML + "<li onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/unicornparrot.gif'></li>";
+            elemento.innerHTML = elemento.innerHTML + "<li data-framework='carta7'onclick='virarCarta(this)'class="+listaCartasEmbaralhadas[contador]+"><img class ='verso'src='imagens/front.png'><img class ='frente'src='imagens/unicornparrot.gif'></li>";
         }
         contador++;
     }
@@ -28,18 +32,17 @@ function adicionarCartas() {
 
 montarJogo();
 
+function mostrarContador(){
+    alert(contador);
+}
+
 function montarJogo(){
     montarArray();
     atribuirCartasNoArray();
     embaralharCartas();
-    alert(listaCartasEmbaralhadas);
     adicionarCartas();
 }
-function atribuirImagens(){
-    const itensLista = document.querySelectorAll("li");
-    const itensListaArr = Array.from(itensLista);
-    alert(itensListaArr);
-}
+
 function perguntarCartas(){
     qtdCartas = prompt("Com quantas cartas vc quer jogar?");
     while(qtdCartas%2!=0 || qtdCartas<4 || qtdCartas>14){
@@ -84,8 +87,48 @@ function comparador() {
 }
 function virarCarta(elemento){
     const itemLista = elemento;
-    itemLista.classList.add("virada");
+    const x = itemLista.dataset.framework;
+    arrayTemporario.push(x);
+    contadorCartasEmJogo ++;
+    if(contadorCartasEmJogo===1){
+        itemLista.classList.add("viradaEmJogo"); 
+    }
+    else if(contadorCartasEmJogo===2){
+        itemLista.classList.add("virada");
+        if(arrayTemporario[0]===arrayTemporario[1]){ // e x===true
+            setTimeout(match,1000);
+            // adicionar classe para deixar nao clickavel
+        }else{
+            setTimeout(naoMatch,1000, itemLista);
+            // desfazer classes
+        }
+    }
+}
+function match(){
+    const primeiraCarta = document.querySelector(".viradaEmJogo");
+            primeiraCarta.classList.add("virada");
+            primeiraCarta.classList.remove("viradaEmJogo");
+            contadorCartasEmJogo = 0;
+            contadorSucessos++;
+            arrayTemporario=[];
+            verificadorEndgame();
+}
+function naoMatch(itemLista){
+    const   primeiraCarta = document.querySelector(".viradaEmJogo");
+            primeiraCarta.classList.remove("viradaEmJogo");
+            itemLista.classList.remove("virada");
+            contadorCartasEmJogo = 0;
+            contadorFalhas++;
+            arrayTemporario=[];
+            verificadorEndgame();
 }
 
-//<img class="verso" src="imagens/aojiru.jpg" alt=""> <img class="frente" src="imagens/arroz.jpg" alt="">
+function verificadorEndgame(){
+    if(contadorSucessos==(qtdCartas/2)){
+        alert("Parabéns, você terminou o jogo em "+Number(contadorFalhas+contadorSucessos)+" tentativas!");
+    }
+}
+
+
+    //const x = itemLista.dataset.framework;
 
