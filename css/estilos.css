@@ -3,12 +3,9 @@ body{
     font-family: 'Roboto', sans-serif;
     overflow-x: hidden;
 }
-.topo{
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-}
+
 h1{
+    margin: 0 auto;
     margin-top: 40px;
     margin-bottom: 47px;
     font-size: 56px;
@@ -21,20 +18,44 @@ h1{
 }
 ul{
     width: 872px;
-    height: 500px;
     margin: 0 auto;
-    background: red;
     display: flex;
     flex-wrap: wrap;
+    background-color: red;
 }
 li{
-    width: 200px;
-    height: 100px;
-    background: blue;
+    height: 146px;
+    width: 117px;
+    background: #75B79E;
     margin-left: 40px;
     margin-top: 20px;
     max-width: 100%;
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid #99CEA8;
 }
+
+img{
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 24px;
+    left: 10px;
+    bottom: 22px;
+    right: 7px;
+}
+.frente{
+    opacity: 0;
+    z-index: 1;
+}
+.virada .frente{
+    opacity: 1;
+}
+.virada .verso{
+    opacity: 0;
+}
+
+
 @media (max-width: 800px){
     ul{
         width: 35%;
